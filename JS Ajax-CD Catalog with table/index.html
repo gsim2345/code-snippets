@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>CD Catalog with table - Javascript Ajax</h1>
+
+<table id="demo"></table>
+<button onclick="loadDoc('cd_catalog.xml', render)">Get CD info</button>
+
+<script>
+function loadDoc(url, afunction) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState === 4 && this.status === 200) {
+      afunction(this);
+    }
+  }
+  xhr.open("GET", url, true);
+  xhr.send();
+}
+
+function render(xml) {
+  var data = xml.responseXML;
+  var artists = data.getElementsByTagName("ARTIST");
+  var titles = data.getElementsByTagName("TITLE");
+  var table = "<tr><th>Artist</th><th>Title</th></tr>"
+  for (var i = 0; i<artists.length; i++) {
+    var tableRowData = [
+      "<tr>",
+        "<td>" + artists[i].innerHTML + "</td>",
+        "<td>" + titles[i].innerHTML + "</td>",
+      "</tr>"
+    ]
+    table += tableRowData.join("");
+  }
+  document.getElementById("demo").innerHTML = table;
+
+}
+</script>
+
+</body>
+</html>
