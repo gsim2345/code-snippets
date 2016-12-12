@@ -25,6 +25,11 @@
     <button onclick="loadDoc('cd_catalog.xml', render)">Get CD info</button>
 
     <script>
+        /**
+         * function loadDoc, loading data from the given URL, and passes it to a callback function.
+         * @param  url      - the URL we fetch the data from
+         * @param  afunction  - a callback function to do something with the data.
+         */
         function loadDoc(url, afunction) {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
@@ -36,6 +41,10 @@
             xhr.send();
         }
 
+        /**
+         * function render - filtering the data from the xml file that is getting passed down from loadDoc function, and rendering on the screen.
+         * @param  xml - an xml file passed down from loadDoc function.
+         */
         function render(xml) {
             var data = xml.responseXML;
             var artists = data.getElementsByTagName("ARTIST");
