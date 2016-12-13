@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+    <h1>CD Catalog with table - Javascript Ajax</h1>
+
+    <div id="demo"></div>
+
+    <button id="prev" onclick="previous()">Previous</button>
+    <button id="next" onclick="next()">Next</button>
+
+
+    <script>
+        var CDindex = 4
+        loadDoc("cd_catalog.xml" ,"0" );
+        /**
+         * function loadDoc, loading data from the given URL, and passes it to a callback function.
+         * @param  url      - the URL we fetch the data from
+         * @param  direction  - determining the direction of the CDindex change.
+         */
+        function loadDoc(url, direction) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                  var data = this.responseXML;
+                  var CDs = data.getElementsByTagName("CD");
+                  if (direction === 'prev' && CDindex > 0) {
+                      CDindex --;
+                  }
+                  else if(direction === 'next' && CDindex < CDs.length - 1 ) {
+                      CDindex ++;
+                  }
+                  var currentCD = CDs[CDindex];
+                  var title = currentCD.getElementsByTagName("TITLE")[0].innerHTML;
+                  var artist = currentCD.getElementsByTagName("ARTIST")[0].innerHTML;
+                  var year = currentCD.getElementsByTagName("YEAR")[0].innerHTML;
+                  document.getElementById("demo").innerHTML = artist + "<br>" + title + "<br>" + year;
+                }
+            }
+            xhr.open("GET", url, true);
+            xhr.send();
+        }
+
+        
+
+        
+        /** function loading the previous CD index from the list */
+        function previous() {
+            loadDoc("cd_catalog.xml",'prev');
+        }
+        /** function loading the next CD index from the list */
+        function next() {
+            loadDoc("cd_catalog.xml",'next');
+        }
+
+    </script>
+
+</body>
+
+</html>
