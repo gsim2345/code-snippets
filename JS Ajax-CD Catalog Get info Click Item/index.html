@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- THE XML FILE AND THE PROBLEM WAS PROVIDED BY wwww.w3schools.com -->
+
+    <h1>CD Catalog with table - Javascript Ajax</h1>
+    <div id="rowData"></div>
+    <table id="demo"></table>
+    <button onclick="loadDoc()">Get CD info</button>
+
+    <script>
+
+        /**function loadDoc -  loading data from the given URL, creating a table from it, and with event delegation choosing which row got clicked, and displaying more information about the chosen element. */
+        function loadDoc() {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var data = this.responseXML;
+              var artistList = data.getElementsByTagName("ARTIST");
+              var titleList = data.getElementsByTagName("TITLE");
+              var yearList = data.getElementsByTagName("YEAR");
+              var table = "<tr><th>Artist</th><th>Title</th></tr>"
+              for (var i = 0, length = artistList.length ; i < length; i++ ) {
+                var tableData = [
+                  "<tr id='" + i + "'>",
+                    "<td>" + artistList[i].innerHTML + "</td>",
+                    "<td>" + titleList[i].innerHTML + "</td>",
+                  "</tr>"
+                ];
+                table = table + tableData.join("");
+              }
+              document.getElementById("demo").innerHTML = table;
+              document.getElementById("demo").addEventListener("click", function(event) {
+                if (event.target.parentNode.nodeName === "TR") {
+                  console.log(event.target.parentNode.id);
+                  var textId = event.target.parentNode.id;
+                  document.getElementById("rowData").innerHTML = artistList[textId].innerHTML + "<br>" + titleList[textId].innerHTML + "<br>" + yearList[textId].innerHTML;
+                }
+              });
+
+            }
+          }
+          xhr.open("GET", "cd_catalog.xml", true);
+          xhr.send();
+        }
+
+
+    </script>
+
+</body>
+
+</html>
