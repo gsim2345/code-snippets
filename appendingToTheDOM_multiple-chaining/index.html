@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"></script>
+
+<div class="parentDiv">
+  <div id="aDiv">
+  </div>
+</div>
+
+<script>
+//https://forum.freecodecamp.com/t/jquery-updating-the-dom-multiple-times-chaining/63705
+// SELECT IT ONCE, THEN MODIFY IT IN THE LOOP.
+var $aDiv = $('#aDiv');
+var $parentDiv = $aDiv.parent();
+
+//  We build  DOM fragments or HTLM string (with array)and then update the DOM only one time.
+//  Select  $aDiv and save reference to its parent in the DOM,
+//  then detach() $aDiv from the DOM. This allows us to work on it without updating the DOM on every change. It's much faster than working directly in the DOM.
+// instead of for loop, we can append a new empty array, with the elements as joiners
+// The join method then builds the list for us with no loop needed!
+$aDiv.detach()
+  .append(new Array(64).join("<ul></ul>"))
+  .find('ul').append(new Array(58).join("<li></li>"))
+  .end() // end() returns the object to its state before the call to find()
+  .appendTo($parentDiv);  //.appendTo() puts $aDiv back in the DOM.
+
+
+</script>
+
+</body>
+</html>
